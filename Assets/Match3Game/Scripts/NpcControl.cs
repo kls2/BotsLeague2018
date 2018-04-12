@@ -120,9 +120,12 @@ public class NpcControl : MonoBehaviour {
 
 public enum Element
 {
-    FIRE = 0,
-    WATER = 1,
-    ELEC = 2,
-    MAGNET = 3,
-    LENGTH = 4,
+    EMPTY = 0,
+    ICE = 1,
+    FIRE = 2,
+    WATER = 3,
+    MAGNET = 4,
+    LIFE = 5,
+    ELEC = 6,
+    LENGTH = 6,
 }

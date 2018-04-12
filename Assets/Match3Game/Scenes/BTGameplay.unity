@@ -828,7 +828,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 7f6406b0747be3f499fff91a5421f5cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1425,7 +1425,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: -619387775
   m_SortingLayer: -1
-  m_SortingOrder: 0
+  m_SortingOrder: -2
   m_Sprite: {fileID: 21300000, guid: d437967be699822499852260ea3bc37b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -1900,6 +1900,9 @@ MonoBehaviour:
   idleSprite: {fileID: 71580104}
   attackSprite: {fileID: 1428696629}
   damageSprite: {fileID: 327145451}
+  element: 0
+  health: 0
+  maxHealth: 0
 --- !u!1 &586270963
 GameObject:
   m_ObjectHideFlags: 0
@@ -3244,7 +3247,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: -1
   m_Sprite: {fileID: 21300000, guid: 7f6406b0747be3f499fff91a5421f5cd, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
@@ -3322,7 +3325,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1358196922}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -0.0005, y: 0.943, z: 0}
+  m_LocalPosition: {x: -0.0005, y: 1.335, z: 0}
   m_LocalScale: {x: 0.09746956, y: 0.09746958, z: 0.09746958}
   m_Children: []
   m_Father: {fileID: 0}
@@ -4092,13 +4095,6 @@ MonoBehaviour:
   matchItemPrefab: {fileID: 100000, guid: d40112c95b6e50c47a27d828be893165, type: 2}
   explosionPrefab: {fileID: 100008, guid: 5944c957ce894f2418ed799f483eb975, type: 2}
   effectArea: {fileID: 877082010}
-  starEffectPrefabs:
-  - {fileID: 100000, guid: 211df89ce3d57fd40b5674e7363a093c, type: 2}
-  - {fileID: 100000, guid: 2df6b74e2765f8d42b0f26e66da528b0, type: 2}
-  - {fileID: 100000, guid: 2e3bf99d6b8a9b7439690be4d4cdfd61, type: 2}
-  - {fileID: 100000, guid: 98abae2aad88ec34883ad752ac11cae2, type: 2}
-  - {fileID: 100000, guid: 6c7cd2d526cf544499bd21dfe94617a0, type: 2}
-  - {fileID: 100000, guid: 11f862540d9ba4d42a7197c5bd4f7804, type: 2}
   choice: {fileID: 1765255420}
   curTile: {fileID: 0}
   audioMatchClip: []
@@ -4130,6 +4126,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 07720fa3a7f935344968a6f8ada10587, type: 3}
   - {fileID: 21300000, guid: c73fbdd944dbb47458c9a872d514e499, type: 3}
   - {fileID: 21300000, guid: f823afebcc9eb354bbf3cfd838c82c72, type: 3}
+  canDoInput: 0
 --- !u!82 &1655657943
 AudioSource:
   m_ObjectHideFlags: 0

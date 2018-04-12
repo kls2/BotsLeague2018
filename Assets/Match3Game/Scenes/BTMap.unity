@@ -1258,7 +1258,7 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1060837072}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 1018, y: -0.79974407, z: 0}
+  m_LocalPosition: {x: 1408, y: -0.79974407, z: 0}
   m_LocalScale: {x: 29.786215, y: 29.786182, z: 29.786182}
   m_Children: []
   m_Father: {fileID: 275496593}
@@ -1665,6 +1665,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 4313af52c2d67f443971bb939b1ee991, type: 3}
   - {fileID: 21300000, guid: dc5ee622a5b37504aaac4511a61ef81a, type: 3}
   - {fileID: 21300000, guid: 64597e8bb8d77a246981babd4ce1679d, type: 3}
+  spritesSelected: []
   easeType: 29
   grid: {fileID: 0}
   puzzle: {fileID: 0}
@@ -1672,13 +1673,6 @@ MonoBehaviour:
   matchItemPrefab: {fileID: 100000, guid: d40112c95b6e50c47a27d828be893165, type: 2}
   explosionPrefab: {fileID: 100008, guid: 5944c957ce894f2418ed799f483eb975, type: 2}
   effectArea: {fileID: 0}
-  starEffectPrefabs:
-  - {fileID: 100000, guid: 211df89ce3d57fd40b5674e7363a093c, type: 2}
-  - {fileID: 100000, guid: 2df6b74e2765f8d42b0f26e66da528b0, type: 2}
-  - {fileID: 100000, guid: 2e3bf99d6b8a9b7439690be4d4cdfd61, type: 2}
-  - {fileID: 100000, guid: 98abae2aad88ec34883ad752ac11cae2, type: 2}
-  - {fileID: 100000, guid: 6c7cd2d526cf544499bd21dfe94617a0, type: 2}
-  - {fileID: 100000, guid: 11f862540d9ba4d42a7197c5bd4f7804, type: 2}
   choice: {fileID: 0}
   curTile: {fileID: 0}
   audioMatchClip: []
@@ -1710,6 +1704,7 @@ MonoBehaviour:
   - {fileID: 21300000, guid: 07720fa3a7f935344968a6f8ada10587, type: 3}
   - {fileID: 21300000, guid: c73fbdd944dbb47458c9a872d514e499, type: 3}
   - {fileID: 21300000, guid: f823afebcc9eb354bbf3cfd838c82c72, type: 3}
+  canDoInput: 0
 --- !u!4 &1553026767
 Transform:
   m_ObjectHideFlags: 0

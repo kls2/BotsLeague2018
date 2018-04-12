@@ -5,9 +5,7 @@ using Holoville.HOTween;
 using Holoville.HOTween.Plugins;
 using UnityEngine.SceneManagement;
 
-/// <summary>
-/// To record the location of data.
-/// </summary>
+// To record the location of data.
 public struct TilePoint {
 	public int x, y;
 	public TilePoint(int px, int py){
@@ -19,18 +17,14 @@ public struct TilePoint {
 	}
 }
 
-/// <summary>
-/// Default setting and type of tile..
-/// </summary>
+// Default setting and type of tile.
 public class Data {
 	public const int tileWidth = 7;
 	public const int tileHeight = 7;
 	public enum TileTypes  { Empty, White, Red, Blue, Magnet, Green, Yellow, Length };
 }
 
-/// <summary>
-/// To record the location of tile data.
-/// </summary>
+// To record the location of tile data.
 [System.Serializable]
 public class Cell {
 	public Data.TileTypes cellType;
@@ -40,10 +34,10 @@ public class Cell {
 	}
 }
 
-/// <summary>
-/// Main Game System.
-/// </summary>
+// Main Game System (and hopefully it will work)
 public class GameSystem : MonoBehaviour {
+
+    //Setting the pieces types (sprite and audio) that will fill the grid
     public Sprite[] sprites; //{"WhiteIce", "RedFire", "BlueWater", "MagnetIron", "GreenLife", "YellowElectricity"};
     public Sprite[] spritesSelected; //{"WhiteIce", "RedFire", "BlueWater", "MagnetIron", "GreenLife", "YellowElectricity"};
     string[] sounds = new string[]{"PieceWhiteIceAudio", "PieceRedFireAudio", "PieceBlueWaterAudio", "PieceMagnetIronAudio", "PieceGreenLifeAudio", "PieceYellowElectricityAudio"};
@@ -58,7 +52,7 @@ public class GameSystem : MonoBehaviour {
 	public GameObject explosionPrefab;
 	public Transform effectArea;
 	
-	public GameObject[] starEffectPrefabs;
+	//public GameObject[] starEffectPrefabs;
    
 	public SpriteRenderer choice;
 	List<MatchItem> tiles;
@@ -76,7 +70,7 @@ public class GameSystem : MonoBehaviour {
 
     public bool canDoInput;
 	
-	// Setup Audio Source.
+	// Setup Audio Source - fuck the bar that took me 5h.
 	void SetupAudioSource(){
 		audioMatchClip = new AudioClip[sounds.Length];
 		audioMatchSource = new AudioSource[sounds.Length];
@@ -175,7 +169,7 @@ public class GameSystem : MonoBehaviour {
 		return stack;
 	}
 
-	// Find Match-3 Tile Hint
+	// Find Match-3 Tile Hint (not sure what is the difference between hint and match 3...)
 	private Dictionary<TilePoint, Data.TileTypes> FindHint() {
 		Dictionary<TilePoint, Data.TileTypes> stack = new Dictionary<TilePoint, Data.TileTypes>();
 		Cell[,] clone = new Cell[Data.tileWidth, Data.tileHeight];
@@ -218,7 +212,7 @@ public class GameSystem : MonoBehaviour {
 		return stack;
 	}
 
-	// Do Empty Tile Move Down
+	// Do Empty Tile Move Down after matching 3
 	private void DoEmptyDown() {
 		for (var x = 0; x < Data.tileWidth; x++) {
 			for (var y = 0; y < Data.tileHeight; y++) {
@@ -261,7 +255,7 @@ public class GameSystem : MonoBehaviour {
 		StartCoroutine( CheckMatch3TileOnly(0.5f) );
 	}
 
-	// Find Match-3 Tile
+	// Find Match-3 Tile (not sure what is find tile)
 	MatchItem FindTile(TilePoint point){
 		foreach (MatchItem tile in tiles) {
 			if (tile.point.Equals( point )) return tile;
@@ -288,7 +282,7 @@ public class GameSystem : MonoBehaviour {
 		return curTile;
 	}
 
-	// Swap Motion Animation
+	// Swap Motion Animation --------------------------------------------------------------------------------- USE THIS TO MAKE AI SWIPE?
 	void DoSwapMotion(Transform a, Transform b){
 		Vector3 posA = a.localPosition;
 		Vector3 posB = b.localPosition;
@@ -298,8 +292,8 @@ public class GameSystem : MonoBehaviour {
 		HOTween.To(b, 0.2f, parms );
 	}
 
-	// Swap Two Tile
-	void DoSwapTile(MatchItem a, MatchItem b) {
+    // Swap Two Tile --------------------------------------------------------------------------------------- USE THIS TO MAKE AI SWIPE?
+    void DoSwapTile(MatchItem a, MatchItem b) {
 		TilePoint p1 = a.point;
 		TilePoint p2 = b.point;
 
@@ -311,13 +305,14 @@ public class GameSystem : MonoBehaviour {
 		b.point = p1;
 	}
 
+    /* --------------------------------------------------------------------------------------------DEACTIVATED ENEMY ATTACCK TO START TESTING TURN BASED ATTACK
     IEnumerator RandomMonsterAttack(float delayTime)
     {
         yield return new WaitForSeconds(delayTime);
         StartCoroutine(AttackPlayer(0.7f));
         StartCoroutine(RandomMonsterAttack(Random.Range(3f, 6f)));
     }
-
+    */
 
 	// Attack NPC Monster
 	IEnumerator AttackMonster(float delayTime) {
@@ -325,7 +320,7 @@ public class GameSystem : MonoBehaviour {
 		yield return new WaitForSeconds(delayTime);
 
 
-        // REMEMBER TO CHANGE THIS LATER KELLE
+        // -------------------------------------------------------------------------------------  REMEMBER TO CHANGE THIS LATER KELLE (adam)
         // !!!
         // !!!
 
@@ -333,7 +328,7 @@ public class GameSystem : MonoBehaviour {
 
         // DON'T FORGET THIS
         npcControl.Damage(10, Element.FIRE);
-        // ^ CHANGE THAT
+        // ^ CHANGE THAT ------------------------------------------------------------------------------------------------------------
 	}
 
     IEnumerator AttackPlayer(float delayTime)
@@ -343,6 +338,8 @@ public class GameSystem : MonoBehaviour {
         pcControl.Damage();
     }
 
+
+    /*
 	// Star Flash Effect
 	void DoStarEffect(Vector3 pos, int type){
 		if (type<1) return;
@@ -356,7 +353,9 @@ public class GameSystem : MonoBehaviour {
         HOTween.To(starEffect, 0.8f, new TweenParms().Prop("localPosition", new PlugVector3Path(path, EaseType.Linear, true)).Ease(EaseType.Linear));
     }
 
-	// Fill Empty Tile
+    */
+
+	// Fill Empty Tile after Matching
 	IEnumerator FillEmpty(float delayTime) {
 		yield return new WaitForSeconds(delayTime);
 		DoEmptyDown();
@@ -393,6 +392,8 @@ public class GameSystem : MonoBehaviour {
         StartCoroutine(FillEmpty(0.5f));
     }
  
+
+    //Make animation fade out after matching tiles and before creating new tiles to drop down
     IEnumerator animateDelete(MatchItem item, int index)
     {
         SpriteRenderer sr = item.GetComponent<SpriteRenderer>();
@@ -409,7 +410,7 @@ public class GameSystem : MonoBehaviour {
         sr.enabled = false;
     }
 
-	// Find Hint Debug
+	// Find Hint Debug (it tells possible combinations in the board)
 	void DebugFindHint(){
 		Dictionary<TilePoint, Data.TileTypes> st = FindHint();
 		string str = "";
@@ -427,6 +428,8 @@ public class GameSystem : MonoBehaviour {
         Debug.Log("FindMatch: " + newString);
     }
 
+
+    //Making the AI recognize possible matches after the player turn
     void ReadyEnemyTurn()
     {
         Dictionary<TilePoint, Data.TileTypes> st = FindHint();
@@ -454,7 +457,7 @@ public class GameSystem : MonoBehaviour {
         MatchItem item2 = FindTile(tile2);
     }
 
-	// Ready Game Trun
+	// Ready Game Turn
 	void ReadyGameTurn(){
 		isDoing = false;
         canDoInput = true;
@@ -462,43 +465,77 @@ public class GameSystem : MonoBehaviour {
 	}
 
     void DoTileEffect(Data.TileTypes tileType)
-    { 
-        //switch (tileType)
-        //{
-        //    case Data.TileTypes.Blue:
+    {
+        /* switch (tileType) ------------------------------------------------------- Create different effects to the different pieces (eg. ice freezes enemy, heart gives life, etc.)
+       
+        //player life = 350, Enemy life Level 1 = 270
 
-        //        // What do blue tiles do?
+       //3 pieces same type = 18 pts damage
+       //4 pieces same type = 28 pts damage
+       //more than 4 pieces same type = 42 damage 
+       //3 strong pieces (considering element) = 30 pts damage
+       //4 strong pieces (considering element) = 45 pts damage
+       //more than 4 strong pieces (considering element) = 60 pts damage
+       
+        //3 pieces life = 20 pts life back
+        //4 pieces life = 32 pts life back
+        ///more than 4 pieces life = 45 pts life back
+
+       //3 pieces white = enemy does not play that turn 
+       //4 white = enemy does not play for 2 turns
+       //more than 4 white = enemy does not play for 3 turns (?)
+
+        {
+            
+        case Data.TileTypes.White:
+
+                // What des white tiles do?
 
 
-        //        break;
+                break;
 
-        //    case Data.TileTypes.Green:
+        case Data.TileTypes.Red:
+                if (isPlayerTurn)
+                {
+                    npcControl.Damage(10, Element.FIRE);
+                }
+                else
+                {
+                    pcControl.Damage(10, Element.FIRE);
+                }
 
-        //        // Put code to heal the player here
+                break;
 
-        //        break;
+        case Data.TileTypes.Blue:
 
-        //    case Data.TileTypes.Magnet:
+                // What do blue tiles do?
 
+                break;
 
-        //        break;
+        
+        case Data.TileTypes.Magnet:
 
-        //    case Data.TileTypes.Red:
-        //        if (isPlayerTurn)
-        //        {
-        //            npcControl.Damage(10, Element.FIRE);
-        //        }
-        //        else
-        //        {
-        //            pcControl.Damage(10, Element.FIRE);
-        //        }
+               // What do magnet tiles do?
 
-        //        break;
-        //}
+                break;
+
+        case Data.TileTypes.Green:
+
+                // Put code to heal the player here
+
+                break;
+
+        case Data.TileTypes.Yellow:
+
+                // normal attack: 10 points
+
+                break;
+            
+        } */
     }
 
-	// Check Only Match-3 Tile
-	IEnumerator CheckMatch3TileOnly(float delayTime) {
+    // Check Only Match-3 Tile
+    IEnumerator CheckMatch3TileOnly(float delayTime) {
 		yield return new WaitForSeconds(delayTime);
 		Dictionary<TilePoint, Data.TileTypes> stack = FindMatch(cells);
 		if (stack.Count>0) {
@@ -522,7 +559,7 @@ public class GameSystem : MonoBehaviour {
 		}
 	}
     
-	// Click Event
+	// Click Event - highlighting the piece the playerr is holding to swipe
 	void OnClickAction(MatchItem tile){
         //StartCoroutine(animateDelete(tile.GetComponent<SpriteRenderer>(), (tile.spriteIndex) * 4));
         
@@ -539,6 +576,7 @@ public class GameSystem : MonoBehaviour {
         
 	}
 
+    //Swiping the pieces by drag and drop
     void OnClickUpAction(MatchItem tile)
     {
         if (curTile != null)
@@ -564,7 +602,7 @@ public class GameSystem : MonoBehaviour {
         SceneManager.LoadScene("BTMap");
     }
 
-	// Start Game
+	// Start Game - setting the level
 	void Start () {
 		isDoing = false;
 		SetupAudioSource();
@@ -577,7 +615,7 @@ public class GameSystem : MonoBehaviour {
 		}
 		DisplayTileGrid();
 		ReadyGameTurn();
-        StartCoroutine(RandomMonsterAttack(Random.Range(3f, 6f)));
+        //StartCoroutine(RandomMonsterAttack(Random.Range(3f, 6f))); -------------------------------------------------------------------------------------------------- not sure why? 
 	}
 
     private void Update()

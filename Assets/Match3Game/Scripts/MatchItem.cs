@@ -25,6 +25,9 @@ public class MatchItem : MonoBehaviour {
 		StartCoroutine( DoFlashEffect(UnityEngine.Random.Range(1f,3f)) );
 	}
 
+
+    /*
+    // sparkle and gass particle effect from original bought game - study how to deal with it later on
     void Start () {
 		flashPrefab = new GameObject[]{
 			Resources.Load("Prefabs/FlashEffect", typeof(GameObject)) as GameObject,
@@ -32,6 +35,9 @@ public class MatchItem : MonoBehaviour {
 		};
 		StartCoroutine( DoFlashEffect(UnityEngine.Random.Range(1f,3f)) );
 	}
+
+    */
+    
 
     
 }
