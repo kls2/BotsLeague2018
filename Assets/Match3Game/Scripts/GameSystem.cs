@@ -68,11 +68,13 @@ public class GameSystem : MonoBehaviour {
 	public AudioClip[] audioMatchClip = null;
 	public AudioSource[] audioMatchSource = null;
 
-	public PcControl pcControl;
+	public PcControl pcControl;  
 	public NpcControl npcControl;
     public Sprite[] deleteSprites;
 
 	bool isDoing = false;
+
+    public bool canDoInput;
 	
 	// Setup Audio Source.
 	void SetupAudioSource(){
@@ -321,7 +323,17 @@ public class GameSystem : MonoBehaviour {
 	IEnumerator AttackMonster(float delayTime) {
 		pcControl.Attack();
 		yield return new WaitForSeconds(delayTime);
-		npcControl.Damage();
+
+
+        // REMEMBER TO CHANGE THIS LATER KELLE
+        // !!!
+        // !!!
+
+
+
+        // DON'T FORGET THIS
+        npcControl.Damage(10, Element.FIRE);
+        // ^ CHANGE THAT
 	}
 
     IEnumerator AttackPlayer(float delayTime)
@@ -405,13 +417,85 @@ public class GameSystem : MonoBehaviour {
 			str += item.Key + ", ";
 		}
 		Debug.Log("FindHint: " + str);
-	}
+
+        Dictionary<TilePoint, Data.TileTypes> matches = FindMatch(cells);
+        string newString = "";
+        foreach (KeyValuePair<TilePoint, Data.TileTypes> item in matches)
+        {
+            newString += item.Key + ", ";
+        }
+        Debug.Log("FindMatch: " + newString);
+    }
+
+    void ReadyEnemyTurn()
+    {
+        Dictionary<TilePoint, Data.TileTypes> st = FindHint();
+
+        List<TilePoint> tileMatchList = new List<TilePoint>();
+
+        foreach (KeyValuePair<TilePoint, Data.TileTypes> item in st)
+        {
+            tileMatchList.Add(item.Key);
+        }
+
+        // Divide size of match list in 2 to get actual number of matches
+        int firstMatchIndex = tileMatchList.Count / 2;
+
+        // Choose one of those matches randomly
+        int randomMatchIndex = Random.Range(0, firstMatchIndex);
+
+        // Get the first tile coordinate of one of those random matches
+        TilePoint tile1 = tileMatchList[randomMatchIndex * 2];
+
+         // Get the second tile coordinate of one of those random matches
+        TilePoint tile2 = tileMatchList[randomMatchIndex * 2 + 1];
+
+        MatchItem item1 = FindTile(tile1);
+        MatchItem item2 = FindTile(tile2);
+    }
 
 	// Ready Game Trun
 	void ReadyGameTurn(){
 		isDoing = false;
+        canDoInput = true;
 		DebugFindHint();
 	}
+
+    void DoTileEffect(Data.TileTypes tileType)
+    { 
+        //switch (tileType)
+        //{
+        //    case Data.TileTypes.Blue:
+
+        //        // What do blue tiles do?
+
+
+        //        break;
+
+        //    case Data.TileTypes.Green:
+
+        //        // Put code to heal the player here
+
+        //        break;
+
+        //    case Data.TileTypes.Magnet:
+
+
+        //        break;
+
+        //    case Data.TileTypes.Red:
+        //        if (isPlayerTurn)
+        //        {
+        //            npcControl.Damage(10, Element.FIRE);
+        //        }
+        //        else
+        //        {
+        //            pcControl.Damage(10, Element.FIRE);
+        //        }
+
+        //        break;
+        //}
+    }
 
 	// Check Only Match-3 Tile
 	IEnumerator CheckMatch3TileOnly(float delayTime) {
@@ -428,6 +512,7 @@ public class GameSystem : MonoBehaviour {
 	IEnumerator CheckMatch3Tile(float delayTime, MatchItem a, MatchItem b) {
 		yield return new WaitForSeconds(delayTime);
 		Dictionary<TilePoint, Data.TileTypes> stack = FindMatch(cells);
+        canDoInput = false;
 		if (stack.Count>0) {
 			CheckMatch3(stack);
 		} else {
@@ -497,35 +582,37 @@ public class GameSystem : MonoBehaviour {
 
     private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, LayerMask.GetMask("UI2D")))
+        if ( canDoInput ) {
+            if (Input.GetMouseButtonDown(0))
             {
-                if (hit.transform.gameObject.layer == 8)
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit, LayerMask.GetMask("UI2D")))
                 {
-                    if (hit.transform.gameObject.GetComponent<MatchItem>())
+                    if (hit.transform.gameObject.layer == 8)
                     {
-                        OnClickAction(hit.transform.gameObject.GetComponent<MatchItem>());
+                        if (hit.transform.gameObject.GetComponent<MatchItem>())
+                        {
+                            OnClickAction(hit.transform.gameObject.GetComponent<MatchItem>());
+                        }
                     }
                 }
             }
-        }
 
-        if (Input.GetMouseButtonUp(0))
-        {
-            RaycastHit hit;
-            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-
-            if (Physics.Raycast(ray, out hit, LayerMask.GetMask("UI2D")))
+            if (Input.GetMouseButtonUp(0))
             {
-                if (hit.transform.gameObject.layer == 8)
-                {
-                    if (hit.transform.gameObject.GetComponent<MatchItem>())
+                RaycastHit hit;
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+
+                if (Physics.Raycast(ray, out hit, LayerMask.GetMask("UI2D")))
+            {
+                    if (hit.transform.gameObject.layer == 8)
                     {
-                        OnClickUpAction(hit.transform.gameObject.GetComponent<MatchItem>());
+                        if (hit.transform.gameObject.GetComponent<MatchItem>())
+                        {
+                            OnClickUpAction(hit.transform.gameObject.GetComponent<MatchItem>());
+                        }
                     }
                 }
             }

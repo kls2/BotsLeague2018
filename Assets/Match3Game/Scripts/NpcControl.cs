@@ -15,6 +15,14 @@ public class NpcControl : MonoBehaviour {
 	
 	float healthPoint = 1f;
 
+    public Element element;
+
+
+    public int health;
+    public int maxHealth;
+
+
+
     Animator animator;
     
     void Start()
@@ -71,16 +79,50 @@ public class NpcControl : MonoBehaviour {
 		SetHealthPoint(healthPoint - damage);
 	}
 
-	public void Damage(){
+	public void Damage(int damageToTake, Element damageElement){
         if (animator) animator.CrossFade("Damage", 0.2f);
+
+
+        int totalDamage = damageToTake;
+        switch (damageElement)
+        {
+            case Element.WATER:
+                if (element == Element.FIRE)
+                    totalDamage = damageToTake * 2;
+                break;
+        }
+
+
+        health -= totalDamage;
+        
+
         StartCoroutine(DoDamage(0.1f));
 		StartCoroutine( DoneDamage(0.1f) );
 		SetHealthDamage(0.1f);
-	}
+
+        if (health <= 0) Die();
+    }
+
+    void Die()
+    {
+        // Probably destroy the game object or something
+    }
+
+
     public void Attack()
     {
         if (animator) animator.CrossFade("Attack", 0.2f);
         StartCoroutine(DoAttack(0.5f));
         StartCoroutine(DoneAttack(0.5f));
     }
+}
+
+
+public enum Element
+{
+    FIRE = 0,
+    WATER = 1,
+    ELEC = 2,
+    MAGNET = 3,
+    LENGTH = 4,
 }
