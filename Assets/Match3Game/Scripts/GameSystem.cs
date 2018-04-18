@@ -69,6 +69,9 @@ public class GameSystem : MonoBehaviour {
 	bool isDoing = false;
 
     public bool canDoInput;
+
+    public int playerCount = 2;
+    public int curPlayerTurn = -1;
 	
 	// Setup Audio Source - fuck the bar that took me 5h.
 	void SetupAudioSource(){
@@ -430,8 +433,10 @@ public class GameSystem : MonoBehaviour {
 
 
     //Making the AI recognize possible matches after the player turn
-    void ReadyEnemyTurn()
+    IEnumerator ReadyEnemyTurn()
     {
+        yield return new WaitForSeconds(2f);
+        Debug.Log("Enemy turn start");
         Dictionary<TilePoint, Data.TileTypes> st = FindHint();
 
         List<TilePoint> tileMatchList = new List<TilePoint>();
@@ -455,14 +460,39 @@ public class GameSystem : MonoBehaviour {
 
         MatchItem item1 = FindTile(tile1);
         MatchItem item2 = FindTile(tile2);
+
+        isDoing = true;
+        DoSwapTile(item1, item2);
+        DoSwapMotion(item1.transform, item2.transform);
+        yield return StartCoroutine(CheckMatch3Tile(0.5f, item1, item2));
+
+        Debug.Log("AI turn end");
     }
 
 	// Ready Game Turn
 	void ReadyGameTurn(){
-		isDoing = false;
-        canDoInput = true;
-		DebugFindHint();
+        curPlayerTurn = (curPlayerTurn + 1) % playerCount;
+        if (isLocalPlayerTurn())
+        {
+            isDoing = false;
+            canDoInput = true;
+            DebugFindHint();
+        } else
+        {
+            DoAITurn();
+        }
 	}
+
+    bool isLocalPlayerTurn()
+    {
+        return curPlayerTurn == 0;
+    }
+
+    void DoAITurn()
+    {
+        StartCoroutine(ReadyEnemyTurn());
+    }
+
 
     void DoTileEffect(Data.TileTypes tileType)
     {
